@@ -21,7 +21,39 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('ToDo List'),
+        backgroundColor: Colors.teal,
+        centerTitle: true,
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(17, 1, 7, 1),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Nova Tarefa',
+                        labelStyle: TextStyle(color: Colors.teal)
+                    ),
+                  ),
+                ),
+                RaisedButton(
+                  color: Colors.teal,
+                  child: Text('ADD'),
+                  textColor: Colors.white,
+                  onPressed: (){},
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   //obter arquivo
