@@ -19,9 +19,11 @@ class _HomeState extends State<Home> {
 
   final _textController = TextEditingController();
   List _toDoList = [];
+  Map<String, dynamic> _lastRemoved;
+  int _lastRemovedPos;
 
 
-  @override
+  @override //reescrever o método que é chamado quando se inicializa o estado do widget
   void initState() {
     super.initState();
     _readData().then((data){
@@ -79,26 +81,41 @@ class _HomeState extends State<Home> {
             child: ListView.builder(
               padding: EdgeInsets.only(top: 10.0),
               itemCount: _toDoList.length,
-              itemBuilder: (context, index){
-                return CheckboxListTile(
-                  title: Text(_toDoList[index]['title']),
-                  value: _toDoList[index]['ok'],
-                  secondary: CircleAvatar(
-                    child: Icon(_toDoList[index]['ok'] ? Icons.check : Icons.error),
-                  ),
-                  onChanged: (c){ //permite checar um elemento da lista
-                    setState(() {
-                      _toDoList[index]['ok'] = c;
-                      _saveData();//atribui um valor booleano no elemento 'ok' da lista
-                    });
-                  },
-                );
-              },
+              itemBuilder: buildItem,
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget buildItem(context, index){
+   return Dismissible(
+     key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
+     background: Container(
+       color: Colors.red,
+       child: Align(
+         alignment: Alignment(-0.9, 0.0),
+         child: Icon(Icons.delete, color: Colors.white),
+       ),
+     ),
+     direction: DismissDirection.startToEnd,
+     child: CheckboxListTile(
+   title: Text(_toDoList[index]['title']),
+    value: _toDoList[index]['ok'],
+    secondary: CircleAvatar(
+    child: Icon(
+    _toDoList[index]['ok'] ? Icons.check : Icons.error
+    ),
+    ),
+    onChanged: (c){
+    setState(() {
+    _toDoList[index]['ok'] = c;
+    _saveData();
+    });
+    },
+    ),
+   );
   }
 
   //obter arquivo
